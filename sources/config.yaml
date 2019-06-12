@@ -1,0 +1,10 @@
+server:
+  host: '127.0.0.1'
+  port: 8080
+upstreams:
+  server_a:
+    host: '127.0.0.1'
+    port: 9000
+  # server_b:
+  #   host: '127.0.0.1'
+  #   port: 9001
