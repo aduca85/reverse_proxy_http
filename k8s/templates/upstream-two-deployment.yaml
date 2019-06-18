@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-upstream-two
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: {{ .Release.Name }}-upstream-two
+  template:
+    metadata:
+      labels: 
+        component: {{ .Release.Name }}-upstream-two
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-upstream-two
+        image: {{ .Values.upstream_two_deployment.image }}:{{ .Values.upstream_two_deployment.image_tag }}
+        ports:
+          - containerPort: {{ .Values.upstream_two_deployment.containerPort }}

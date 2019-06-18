@@ -1,0 +1,1 @@
+"To connect to reverse proxy take the minikube IP and the port listed in the {{ .Release.Name }}-ingress-service (it should be bigger than 30000 )"

@@ -1,10 +1,16 @@
-server:
-  host: '127.0.0.1'
-  port: 8080
-upstreams:
-  server_a:
-    host: '127.0.0.1'
-    port: 9000
-  # server_b:
-  #   host: '127.0.0.1'
-  #   port: 9001
+proxy:
+  listen:
+    address: "127.0.0.1"
+    port: 8080
+  services:
+    - name: my-service
+      domain: my-service.my-company.com
+      strategy: random
+      hosts:
+      - address: "127.0.0.1"
+        port: 9000
+      - address: "127.0.0.1"
+        port: 9001
+  monitoring:
+    address: "127.0.0.1"
+    port: 8081

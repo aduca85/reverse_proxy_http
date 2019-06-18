@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-reverse-proxy-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: {{ .Release.Name }}-{{ .Values.ingress_service.component }}
+  template:
+    metadata:
+      labels: 
+        component: {{ .Release.Name }}-{{ .Values.ingress_service.component }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-{{ .Values.ingress_service.component }}
+        image: {{ .Values.reverse_proxy_deployment.image }}:{{ .Values.reverse_proxy_deployment.image_tag }}
+        readinessProbe:
+          httpGet: # make an HTTP request
+            port: {{ .Values.readinessProbe.port }}
+            path: {{ .Values.readinessProbe.path }}
+            scheme: {{ .Values.readinessProbe.scheme }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+        livenessProbe:
+          httpGet: # make an HTTP request
+            port: {{ .Values.livenessProbe.port }}
+            path: {{ .Values.livenessProbe.path }}
+            scheme: {{ .Values.livenessProbe.scheme }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+        ports:
+          - containerPort: {{ .Values.reverse_proxy_deployment.containerPort }}
+        env:
+            - name: SERVER_ADDRESS
+              value: '0.0.0.0'
+            - name: SERVER_PORT
+              value: '{{ .Values.reverse_proxy_deployment.containerPort }}'
+            - name: UPSTREAM_ONE_ADDRESS
+              value: {{ .Release.Name }}-upstream-one-cluster-ip
+            - name: UPSTREAM_ONE_PORT
+              value: '{{ .Values.upstream_one_deployment.containerPort }}'
+            - name: UPSTREAM_TWO_ADDRESS
+              value: {{ .Release.Name }}-upstream-two-cluster-ip
+            - name: UPSTREAM_TWO_PORT
+              value: '{{ .Values.upstream_two_deployment.containerPort }}'
+
+
+
+

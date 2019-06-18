@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-upstream-one-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    component: {{ .Release.Name }}-upstream-one
+  ports:
+    - port: {{ .Values.upstream_one_cluster_ip.port }}
+      targetPort: {{ .Values.upstream_one_cluster_ip.targetPort }}

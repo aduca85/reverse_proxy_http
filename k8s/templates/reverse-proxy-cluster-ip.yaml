@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-reverse-proxy-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    component: {{ .Release.Name }}-{{ .Values.ingress_service.component }}
+  ports:
+    - port: {{ .Values.reverse_proxy_cluster_ip.port }}
+      targetPort: {{ .Values.reverse_proxy_cluster_ip.targetPort }}

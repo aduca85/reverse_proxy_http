@@ -1,0 +1,59 @@
+
+replicaCount: 1
+image:
+    repository: aduca/reverse_proxy_python
+    tag: v1
+    pullPolicy: IfNotPresent
+
+ingress_service:
+  type: NodePort
+  port: 8080
+  targetPort: 8080
+  component: reverse-proxy
+
+reverse_proxy_deployment:
+  image: aduca/reverse_proxy_python
+  image_tag: v1
+  containerPort: 8080
+
+reverse_proxy_cluster_ip:
+  port: 8080
+  targetPort: 8080
+
+readinessProbe:
+  port: 8080 # port to use
+  path: /readiness # endpoint to hit
+  scheme: HTTP # or HTTPS
+  initialDelaySeconds: 3 # how long to wait before checking
+  periodSeconds: 3 # how long to wait between checks
+  successThreshold: 1 # how many successes to hit before accepting
+  failureThreshold: 1 # how many failures to accept before failing
+  timeoutSeconds: 1 # how long to wait for a response
+
+livenessProbe:
+  port: 8080 # port to use
+  path: /healthcheck # endpoint to hit
+  scheme: HTTP # or HTTPS
+  initialDelaySeconds: 3 # how long to wait before checking
+  periodSeconds: 3 # how long to wait between checks
+  successThreshold: 1 # how many successes to hit before accepting
+  failureThreshold: 1 # how many failures to accept before failing
+  timeoutSeconds: 1 # how long to wait for a response
+
+upstream_one_cluster_ip:
+  port: 9000
+  targetPort: 9000
+
+upstream_one_deployment:
+  image: aduca/upstream_one
+  image_tag: v2
+  containerPort: 9000
+
+upstream_two_cluster_ip:
+  port: 9001
+  targetPort: 9001
+
+upstream_two_deployment:
+  image: aduca/upstream_two
+  image_tag: v2
+  containerPort: 9001

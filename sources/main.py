@@ -1,21 +1,31 @@
 import server
 import yaml
+import cProfile
 
 def read_config(config_file):
     with open(config_file, 'r') as ymlfile:
         cfg = yaml.load(ymlfile, Loader=yaml.BaseLoader)
     return cfg
 
-if __name__ == '__main__':
-    config_file = 'config.yaml'
+def main():
+    config_file = '/Users/aduca/Projects/SRE/reverse_proxy_http/sources/config.yaml'
     cfg = read_config(config_file)
-    server_address = (cfg['server']['host'], int(cfg['server']['port']))
-    upstreams_addresses = []
-    for key, value in cfg.items():
-        if key == 'upstreams':
-            for _, address in value.items():
-                upstream_address = (address['host'], int(address['port']))
-                upstreams_addresses.append(upstream_address)
-    
-    server = server.Server()
-    server.run(server_address, upstreams_addresses)
+    server_address = (cfg['proxy']['listen']['address'], int(cfg['proxy']['listen']['port']))
+    upstream_addresses = []
+    for service in cfg['proxy']['services']:
+        for key, value in service.items():
+            if key == 'hosts':
+                upstreams = value
+            elif key == 'strategy':
+                load_balancer_strategy = value
+    for upstream in upstreams:
+        addr = (upstream['address'], int(upstream['port']))
+        upstream_addresses.append(addr)
+
+    service = server.Server()
+    service.run(server_address, upstream_addresses, load_balancer_strategy)
+
+
+if __name__ == '__main__':
+    #cProfile.run('main()')
+    main()
