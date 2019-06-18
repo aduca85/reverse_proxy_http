@@ -13,8 +13,9 @@ ingress_service:
 
 reverse_proxy_deployment:
   image: aduca/reverse_proxy_python
-  image_tag: v1
+  image_tag: v4
   containerPort: 8080
+  loadBalancerStrategy: 'random'
 
 reverse_proxy_cluster_ip:
   port: 8080

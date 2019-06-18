@@ -42,6 +42,8 @@ spec:
               value: '0.0.0.0'
             - name: SERVER_PORT
               value: '{{ .Values.reverse_proxy_deployment.containerPort }}'
+            - name: LOAD_BALANCER_STRATEGY
+              value: '{{ .Values.reverse_proxy_deployment.loadBalancerStrategy }}' 
             - name: UPSTREAM_ONE_ADDRESS
               value: {{ .Release.Name }}-upstream-one-cluster-ip
             - name: UPSTREAM_ONE_PORT
@@ -50,6 +52,9 @@ spec:
               value: {{ .Release.Name }}-upstream-two-cluster-ip
             - name: UPSTREAM_TWO_PORT
               value: '{{ .Values.upstream_two_deployment.containerPort }}'
+            - name: K8S
+              value: 'true'
+
 
 
 
