@@ -19,6 +19,7 @@ class Client(threading.Thread):
         
         socket_client = socket_wrapper.SocketWrapper(self.client_connection)
         message_from_client = socket_client.recv_client()
+        
         is_valid_http_request = True
         try:
             http_parser.BasicHTTPHandler(message_from_client)

@@ -8,7 +8,7 @@ def read_config(config_file):
     return cfg
 
 def main():
-    config_file = '/Users/aduca/Projects/SRE/reverse_proxy_http/sources/config.yaml'
+    config_file = 'config.yaml'
     cfg = read_config(config_file)
     server_address = (cfg['proxy']['listen']['address'], int(cfg['proxy']['listen']['port']))
     upstream_addresses = []

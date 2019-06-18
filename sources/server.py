@@ -20,6 +20,5 @@ class Server(socket_wrapper.SocketWrapper):
                 if s == socket.get_socket():
                     client_connection, client_address = socket.accept()
                     client_thread = client.Client(client_connection, client_address, upstream_list, load_balancer_strategy)
-                    print(f'Received connection from {client_address}')
                     client_thread.start()
         socket.close()
