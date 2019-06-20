@@ -12,12 +12,11 @@ class BasicHTTPHandler():
 		
 		requestlines = [i.strip() for i in self.raw_request.splitlines()]
 
-		# Get the method, path, and which version of HTTP is used from the request
+		# Get the method, path, and which protocol is used from the request
 		command, path, request_version = [i.strip() for i in requestlines[0].split()]
 
 		protocol, protocol_version = [i.strip() for i in request_version.split('/')]
-		
-		
+				
 		if command != 'GET':
 			raise InvalidRequest('This protocol supports only GET requests')
 		
