@@ -8,8 +8,7 @@ class BasicHTTPHandler():
 		self.command, self.path, self.protocol, self.protocol_version, self.headers = self.parse_request()
 	
 	def parse_request(self):
-		# Define a method for parsing HTTP request
-		
+		# Define a method for parsing HTTP request	
 		requestlines = [i.strip() for i in self.raw_request.splitlines()]
 
 		# Get the method, path, and which protocol is used from the request
