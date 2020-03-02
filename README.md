@@ -11,7 +11,7 @@ Python 3.x.x
 
 Platform
 --------
-Any Linux distributions
+Any Linux distributions available
 
 Usage
 -----
